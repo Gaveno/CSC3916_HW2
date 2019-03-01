@@ -105,6 +105,12 @@ router.route('/movies')
                 env:process.env.UNIQUE_KEY
             });
         }
+    )
+    .all(function (req, res) {
+            console.log(req.body);
+            res = res.status(400);
+            res.send("Request type not supported. Only Post, Get, Put, and Delete supported.");
+        }
     );
 
 router.post('/signup', function(req, res) {
