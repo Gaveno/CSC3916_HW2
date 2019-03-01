@@ -14,6 +14,23 @@ app.use(passport.initialize());
 
 var router = express.Router();
 
+function getJSONObject(req) {
+    var json = {
+        headers : "No Headers",
+        key: process.env.UNIQUE_KEY,
+        body : "No Body"
+    };
+
+    if (req.body != null) {
+        json.body = req.body;
+    }
+    if (req.headers != null) {
+        json.headers = req.headers;
+    }
+
+    return json;
+}
+
 router.route('/post')
     .post(authController.isAuthenticated, function (req, res) {
             console.log(req.body);
@@ -22,7 +39,8 @@ router.route('/post')
                 console.log("Content-Type: " + req.get('Content-Type'));
                 res = res.type(req.get('Content-Type'));
             }
-            res.send(req.body);
+            let o = getJSONObject(req);
+            res.json(o);
         }
     );
 
@@ -34,7 +52,12 @@ router.route('/movies')
                 console.log("Content-Type: " + req.get('Content-Type'));
                 res = res.type(req.get('Content-Type'));
             }
-            res.send(req.body);
+            res.send({status:200,
+                      message:"movie saved",
+                      headers:req.headers,
+                      query:req.query,
+                      env:process.env.UNIQUE_KEY
+            });
         }
     );
 
