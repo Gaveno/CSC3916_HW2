@@ -124,7 +124,7 @@ router.route('/signup')
             if (!req.body.username || !req.body.password) {
                 res.json({success: false, msg: 'Please pass username and password.'});
             } else {
-                var newUser = {
+                let newUser = {
                     username: req.body.username,
                     password: req.body.password
                 };
@@ -168,13 +168,13 @@ router.route('/signin')
         }
     );
 
-router.route('/')
+/*router.route('/')
     .all(function (req, res) {
             console.log(req.body);
             res = res.status(403);
             res.send("Request type not supported. No operations supported here.");
         }
-    );
+    );*/
 
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
