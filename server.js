@@ -142,7 +142,7 @@ router.route('/signup')
     );
 
 router.route('/signin')
-    .post('/signin', function(req, res) {
+    .post(function(req, res) {
             var user = db.findOne(req.body.username);
 
             if (!user) {
@@ -168,13 +168,13 @@ router.route('/signin')
         }
     );
 
-/*router.route('/')
+router.route('/')
     .all(function (req, res) {
             console.log(req.body);
             res = res.status(403);
             res.send("Request type not supported. No operations supported here.");
         }
-    );*/
+    );
 
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
