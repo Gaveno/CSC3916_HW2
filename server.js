@@ -90,6 +90,21 @@ router.route('/movies')
                 env:process.env.UNIQUE_KEY
             });
         }
+    )
+    .delete(authController.isAuthenticated, function (req, res) {
+            console.log(req.body);
+            res = res.status(200);
+            if (req.get('Content-Type')) {
+                console.log("Content-Type: " + req.get('Content-Type'));
+                res = res.type(req.get('Content-Type'));
+            }
+            res.send({status:200,
+                message:"movie deleted",
+                headers:req.headers,
+                query:req.query,
+                env:process.env.UNIQUE_KEY
+            });
+        }
     );
 
 router.post('/signup', function(req, res) {
