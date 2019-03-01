@@ -45,7 +45,7 @@ router.route('/post')
     )
     .all(function (req, res) {
             console.log(req.body);
-            res = res.status(400);
+            res = res.status(403);
             res.send("Request type not supported. Only Post operation is supported.");
         }
     );
@@ -114,7 +114,7 @@ router.route('/movies')
     )
     .all(function (req, res) {
             console.log(req.body);
-            res = res.status(400);
+            res = res.status(403);
             res.send("Request type not supported. Only Post, Get, Put, and Delete operations are supported.");
         }
     );
@@ -136,7 +136,7 @@ router.route('/signup')
     )
     .all(function(req, res) {
             console.log(req.body);
-            res = res.status(400);
+            res = res.status(403);
             res.send("Request type not supported. Only Post operation is supported.");
         }
     );
@@ -163,8 +163,16 @@ router.route('/signin')
     )
     .all(function (req, res) {
             console.log(req.body);
-            res = res.status(400);
+            res = res.status(403);
             res.send("Request type not supported. Only Post operation is supported.");
+        }
+    );
+
+router.route('/')
+    .all(function (req, res) {
+            console.log(req.body);
+            res = res.status(403);
+            res.send("Request type not supported. No operations supported here.");
         }
     );
 
