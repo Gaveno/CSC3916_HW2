@@ -42,6 +42,12 @@ router.route('/post')
             let o = getJSONObject(req);
             res.json(o);
         }
+    )
+    .all(function (req, res) {
+            console.log(req.body);
+            res = res.status(400);
+            res.send("Request type not supported. Only Post operation is supported.");
+        }
     );
 
 router.route('/movies')
@@ -109,43 +115,58 @@ router.route('/movies')
     .all(function (req, res) {
             console.log(req.body);
             res = res.status(400);
-            res.send("Request type not supported. Only Post, Get, Put, and Delete supported.");
+            res.send("Request type not supported. Only Post, Get, Put, and Delete operations are supported.");
         }
     );
 
-router.post('/signup', function(req, res) {
-    if (!req.body.username || !req.body.password) {
-        res.json({success: false, msg: 'Please pass username and password.'});
-    } else {
-        var newUser = {
-            username: req.body.username,
-            password: req.body.password
-        };
-        // save the user
-        db.save(newUser); //no duplicate checking
-        res.json({success: true, msg: 'Successful created new user.'});
-    }
-});
-
-router.post('/signin', function(req, res) {
-
-    var user = db.findOne(req.body.username);
-
-    if (!user) {
-        res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
-    }
-    else {
-        // check if password matches
-        if (req.body.password == user.password)  {
-            var userToken = { id : user.id, username: user.username };
-            var token = jwt.sign(userToken, process.env.SECRET_KEY);
-            res.json({success: true, token: 'JWT ' + token});
+router.route('/signup')
+    .post(function(req, res) {
+            if (!req.body.username || !req.body.password) {
+                res.json({success: false, msg: 'Please pass username and password.'});
+            } else {
+                var newUser = {
+                    username: req.body.username,
+                    password: req.body.password
+                };
+                // save the user
+                db.save(newUser); //no duplicate checking
+                res.json({success: true, msg: 'Successful created new user.'});
+            }
         }
-        else {
-            res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+    )
+    .all(function(req, res) {
+            console.log(req.body);
+            res = res.status(400);
+            res.send("Request type not supported. Only Post operation is supported.");
         }
-    }
-});
+    );
+
+router.route('/signin')
+    .post('/signin', function(req, res) {
+            var user = db.findOne(req.body.username);
+
+            if (!user) {
+                res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
+            }
+            else {
+                // check if password matches
+                if (req.body.password == user.password)  {
+                    var userToken = { id : user.id, username: user.username };
+                    var token = jwt.sign(userToken, process.env.SECRET_KEY);
+                    res.json({success: true, token: 'JWT ' + token});
+                }
+                else {
+                    res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+                }
+            }
+        }
+    )
+    .all(function (req, res) {
+            console.log(req.body);
+            res = res.status(400);
+            res.send("Request type not supported. Only Post operation is supported.");
+        }
+    );
 
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
